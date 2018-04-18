@@ -12,8 +12,7 @@ app.get('/', function (req, res) {
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
-  socket.on('drag', () => {
-      socket.emit('drag')
-      socket.broadcast.emit('drag')
+  socket.on('drag', (data) => {
+      io.emit('drag')
   })
 });
