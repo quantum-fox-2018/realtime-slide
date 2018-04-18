@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>Slide 1</section>
+				<section>Slide 2</section>
+				<section>Udah</section>
+				<section>Ga ada lagi</section>
+				<section>Beneran</section>
+				<section>Woy!</section>
+				<section>Au ah</section>
+				<section>Gelap</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+		<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+		<script>
+			// Initialize Firebase
+			var config = {
+				apiKey: "AIzaSyDo8r8Ec5VSga52OFMrSToq4KBzMrfTep4",
+				authDomain: "realtimeslide.firebaseapp.com",
+				databaseURL: "https://realtimeslide.firebaseio.com",
+				projectId: "realtimeslide",
+				storageBucket: "realtimeslide.appspot.com",
+				messagingSenderId: "518894839064"
+			};
+			firebase.initializeApp(config);
+		</script>
+		<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+			var socket = io('http://localhost:3000/');
+			Reveal.addEventListener( 'slidechanged', function( event ) {
+				console.log(event)
+				socket.emit('klik', event);
+			});
+			socket.on('get klik', function(msg){
+				console.log('keterima klik', msg)
+				Reveal.slide( msg );
+				console.log('slide', msg)
+			});
+    </script>
+  </body>
+	</body>
+</html>
