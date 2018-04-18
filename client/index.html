@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<section data-transition="zoom" data-background-image="http://pix10.agoda.net/hotelImages/179/1790309/1790309_17010715490050188867.jpg?s=1024x768">Pada suatu hari, ada anak bertanya pada bapaknya..</section>
+					<section data-background-image="http://home.bt.com/images/the-20-best-views-in-the-uk-revealed-136417214455702601-170411144310.jpg">"Buat apa berlapar-lapar puasa?" tanyanya</section>
+				</section>
+				<section>
+					<section data-background-image="https://www.discoverwalks.com/blog/wp-content/uploads/2016/06/paris-view-big.jpg">Lalu anak lain pun bertanya..</section>
+					<section data-background-image="https://c1.staticflickr.com/6/5479/30558259494_76d9518b1b_b.jpg">"Tadarus dan tarawih apalah gunanya?" </section>
+				</section>
+				<section data-background-image="https://static1.squarespace.com/static/558d2bc6e4b03457461ef820/592173e059cc68282fb9524e/592179a4e58c62c542db509b/1495366061059/web+stag.jpg">Bapaknya menjawab..</section>
+				<section data-background-image="http://freedesignfile.com/upload/2017/05/Sunrise-tropical-island-beach-view-HD-picture-01.jpg">"Lapar mengajarkanmu rendah hari selalu, tadarus artinya memahami kitab suci, tarawih mendekatkan diri pada Illahi"</section>
+				<section data-background-image="https://t-ec.bstatic.com/images/hotel/max1024x768/589/58997499.jpg">Kemudian anak-anak dan bapak tersebut berpelukan</section>
+				<section>Tamat</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+		<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+			var socket = io('http://localhost:3000/');
+			Reveal.addEventListener( 'slidechanged', function( event ) {
+				socket.emit('klik', event);
+			});
+			socket.on('get klik', function(horizontal, vertical){
+				Reveal.slide( horizontal, vertical );
+			});
+    </script>
+  </body>
+	</body>
+</html>
