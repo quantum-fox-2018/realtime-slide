@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="./css/reveal.css">
+  <link rel="stylesheet" href="./css/theme/white.css">
+  <title>WebSocket Slide Show</title>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides" id="app">
+      <section data-background-image="https://images.pexels.com/photos/1000494/pexels-photo-1000494.jpeg?auto=compress&cs=tinysrgb&h=650&w=940">
+        Slide 1
+      </section>
+
+      <section>
+        <section data-background-image="https://images.pexels.com/photos/950222/pexels-photo-950222.jpeg?auto=compress&cs=tinysrgb&h=650&w=940">
+          Slide 2 A
+        </section>
+        <section data-background-image="https://images.pexels.com/photos/941546/pexels-photo-941546.jpeg?auto=compress&cs=tinysrgb&h=650&w=940">
+          Slide 2 B
+        </section>
+      </section>
+
+      <section data-background-image="https://images.pexels.com/photos/1000494/pexels-photo-1000494.jpeg?auto=compress&cs=tinysrgb&h=650&w=940">
+        Slide 3
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script src="lib/js/head.min.js"></script>
+  <script src="./js/reveal.js"></script>
+  <script src="./js/app-vue.js"></script>
+</body>
+</html>
