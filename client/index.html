@@ -24,14 +24,18 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-				<section>Udah</section>
-				<section>Ga ada lagi</section>
-				<section>Beneran</section>
-				<section>Woy!</section>
-				<section>Au ah</section>
-				<section>Gelap</section>
+				<section>
+					<section data-transition="zoom" data-background-image="http://pix10.agoda.net/hotelImages/179/1790309/1790309_17010715490050188867.jpg?s=1024x768">Pada suatu hari, ada anak bertanya pada bapaknya..</section>
+					<section data-background-image="http://home.bt.com/images/the-20-best-views-in-the-uk-revealed-136417214455702601-170411144310.jpg">"Buat apa berlapar-lapar puasa?" tanyanya</section>
+				</section>
+				<section>
+					<section data-background-image="https://www.discoverwalks.com/blog/wp-content/uploads/2016/06/paris-view-big.jpg">Lalu anak lain pun bertanya..</section>
+					<section data-background-image="https://c1.staticflickr.com/6/5479/30558259494_76d9518b1b_b.jpg">"Tadarus dan tarawih apalah gunanya?" </section>
+				</section>
+				<section data-background-image="https://static1.squarespace.com/static/558d2bc6e4b03457461ef820/592173e059cc68282fb9524e/592179a4e58c62c542db509b/1495366061059/web+stag.jpg">Bapaknya menjawab..</section>
+				<section data-background-image="http://freedesignfile.com/upload/2017/05/Sunrise-tropical-island-beach-view-HD-picture-01.jpg">"Lapar mengajarkanmu rendah hari selalu, tadarus artinya memahami kitab suci, tarawih mendekatkan diri pada Illahi"</section>
+				<section data-background-image="https://t-ec.bstatic.com/images/hotel/max1024x768/589/58997499.jpg">Kemudian anak-anak dan bapak tersebut berpelukan</section>
+				<section>Tamat</section>
 			</div>
 		</div>
 
@@ -51,31 +55,15 @@
 				]
 			});
 		</script>
-		<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
-		<script>
-			// Initialize Firebase
-			var config = {
-				apiKey: "AIzaSyDo8r8Ec5VSga52OFMrSToq4KBzMrfTep4",
-				authDomain: "realtimeslide.firebaseapp.com",
-				databaseURL: "https://realtimeslide.firebaseio.com",
-				projectId: "realtimeslide",
-				storageBucket: "realtimeslide.appspot.com",
-				messagingSenderId: "518894839064"
-			};
-			firebase.initializeApp(config);
-		</script>
 		<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
 			var socket = io('http://localhost:3000/');
 			Reveal.addEventListener( 'slidechanged', function( event ) {
-				console.log(event)
 				socket.emit('klik', event);
 			});
-			socket.on('get klik', function(msg){
-				console.log('keterima klik', msg)
-				Reveal.slide( msg );
-				console.log('slide', msg)
+			socket.on('get klik', function(horizontal, vertical){
+				Reveal.slide( horizontal, vertical );
 			});
     </script>
   </body>

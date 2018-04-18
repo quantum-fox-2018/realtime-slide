@@ -34,11 +34,8 @@ io.on('connection', function(socket){
     console.log('user disconnected');
   });
 
-  socket.on('klik', function(msg){
-    console.log('keterima klik')
-    console.log(msg.indexh);
-    io.emit('get klik', msg.indexh);
-    console.log('kirim klik')
+  socket.on('klik', function(event){
+    io.emit('get klik', event.indexh, event.indexv);
   });
 });
 
@@ -64,6 +61,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 
 module.exports = app;
