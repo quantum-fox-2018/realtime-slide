@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- <ul id="messages"><li v-for="msg in messages">{{ msg }}</li></ul>
+      <form @submit.prevent="submitMsg">
+        <input id="m" autocomplete="off" v-model="inputMsg" /><button>Send</button>
+      </form> -->
+
+    <div class="container">
+      <div id="myCarousel" class="carousel">
+            <!-- Indicators -->
+            <!-- <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol> -->
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" style="width: 100%; height:100%;">
+              <div v-for="img in imgs" class="item" :class="{active: img.active}">
+                <img :src="img.url" :alt="img.title" style="width:100%;">
+                <div class="carousel-caption">
+                  <h3>{{ img.title }}</h3>
+                </div>
+              </div>
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" @click="prevslide()">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel"  @click="nextslide()">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+      </div>
+    </div>
+
+
+    <script src="http://localhost:3200/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js"></script>
+    <!-- <script type="text/javascript" src="jquery.fullPage.js"></script> -->
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+            socket: null,
+            inputMsg: '',
+            messages: [],
+            currIndex: 0,
+            imgs: [
+              {
+                title: 'Brick 1',
+                url: 'pics/0.jpg',
+                active: true
+              },
+              {
+                title: 'Brick 2',
+                url: 'pics/1.jpg',
+                active: false
+              },
+              {
+                title: 'Brick 3',
+                url: 'pics/2.jpg',
+                active: false
+              }
+            ]
+        },
+        created: function () {
+          this.socket = io('http://localhost:3200/')
+          this.socket.on('chat message', function(msg) {
+              this.messages.push(msg)
+          }.bind(this))
+
+          this.socket.on('slide next', function(msg) {
+            $('#myCarousel').carousel('next')
+            $('#myCarousel').carousel('pause')
+          })
+
+          this.socket.on('slide previous', function(msg) {
+            $('#myCarousel').carousel('prev')
+            $('#myCarousel').carousel('pause')
+          })
+
+        },
+        methods:{
+            submitMsg (){
+               this.socket.emit('send messages', this.inputMsg)
+               this.inputMsg = ''
+            },
+            nextslide () {
+               console.log('next')
+               this.socket.emit('next', 'next')
+            },
+            prevslide () {
+               console.log('previous')
+               this.socket.emit('previous', 'previous')
+            }
+        }
+      });
+    </script>
+  </body>
+</html>
