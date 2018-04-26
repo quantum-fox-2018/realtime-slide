@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Socket.io</title>
+</head>
+<body>
+    <div id="app">
+        <div id="carouselMain" class="carousel slide d-none d-md-block">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="https://images.unsplash.com/photo-1508256912445-74f4409bbfde?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f302e7dd05f624e96197416fb36ad246&auto=format&fit=crop&w=1051&q=80" alt="First slide">   
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="https://images.unsplash.com/photo-1485646485012-f09e6a19d9c4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=35deb3c9cdf9c401a71377fb09238eb4&auto=format&fit=crop&w=1050&q=80" alt="Second slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="https://images.unsplash.com/photo-1494948858638-8f2f3be0ef78?ixlib=rb-0.3.5&s=da67e4a65937ef96fd5754f60d25abca&auto=format&fit=crop&w=1050&q=80" alt="Third slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="https://images.unsplash.com/photo-1486758206125-94d07f414b1c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=5dd0763cb8402ca760ec8d37336eb372&auto=format&fit=crop&w=1050&q=80" alt="Fourth slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="https://images.unsplash.com/photo-1495313378299-84a779ccc4b2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=3eb5d138771abd1b4831b35e87c57ba5&auto=format&fit=crop&w=1050&q=80" alt="Fifth slide">
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselMain" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselMain" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <div class="container">
+            <br>
+            <div id="carouselMain" class="slide d-block d-md-none">
+                <button id="carouselPrev" class="btn btn-primary" @click="clickCounterMin"><i class="fas fa-caret-left"></i> Prev</button>
+                <button id="carouselNext" class="btn btn-success float-right" @click="clickCounter">Next <i class="fas fa-caret-right"></i></button>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <label for="message">Message:</label>
+            <input type="text" class="form-control" id="message">
+            <button type="button" class="btn btn-dark" id="message">Broadcast</button>
+            <hr>
+            <!-- <h1>{{clickCount}}</h1> -->
+            <!-- <h1>{{gameOver}}</h1> -->
+            <hr>
+            <ul id="messages">
+                
+            </ul>
+        </div>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            dictionary: ['satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh'],
+            word: null,
+            clickCount: 0,
+            gameOver: null
+        },
+        methods: {
+            randomWord: function () {
+                for(i=0; i<this.dictionary.length; i++){
+                    let random = Math.floor(Math.random()*this.dictionary.length)
+                    this.word = this.dictionary[random]
+                }
+            },
+            clickCounter: function () {
+                this.clickCount+=1
+                this.winner()
+            },
+            clickCounterMin: function () {
+                this.clickCount-=1
+                this.winner()
+            },
+            winner: function () {
+                if(this.clickCount == 20 || this.clickCount == -20){
+                    this.gameOver = 'Game Over'
+                }
+            }
+        }
+    })
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script>
+    let socket = io('http://35.197.131.126')
+    socket.on('hello', () => console.log('Connected from client'))
+    socket.on('message', (message) => {
+        $('#messages').append($('<li>').text(message))
+    })
+    socket.on('slideRight', () => {
+        console.log('kanan')
+        $('#carouselMain').carousel('next')
+    })
+    socket.on('slideLeft', () => {
+        console.log('kiri')
+        $('#carouselMain').carousel('prev')
+    })
+</script>
+<script>
+    let inputMessage = document.querySelector('input#message')
+    let buttonMessage = document.querySelector('button#message')
+    let buttonCarrouselNext = document.querySelector('.carousel-control-next')
+    let buttonCarrouselPrev = document.querySelector('.carousel-control-prev')
+    let buttonNext = document.querySelector('#carouselNext')
+    let buttonPrev = document.querySelector('#carouselPrev')
+
+    buttonMessage.addEventListener('click', () => {
+        console.log('sending message ' + inputMessage.value)
+        socket.emit('message', {
+            message: inputMessage.value
+        })
+        inputMessage.value = ""
+    })
+
+    inputMessage.addEventListener('keyup', function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            document.querySelector('button#message').click()
+        }
+    })
+
+    buttonCarrouselNext.addEventListener('click', () => {
+        socket.emit('slideRight')
+    })
+    buttonCarrouselPrev.addEventListener('click', () => {
+        socket.emit('slideLeft')
+    })
+    buttonNext.addEventListener('click', () => {
+        socket.emit('slideRight')
+    })
+    buttonPrev.addEventListener('click', () => {
+        socket.emit('slideLeft')
+    })
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</html>
